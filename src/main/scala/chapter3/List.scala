@@ -78,14 +78,41 @@ object List {
   def reverse3[A](xs: List[A]): List[A] =
     foldLeft(xs, Nil:List[A])((accum,x) => Cons(x,accum))
 
+  // append a1 to the end of a2
+  def append[A](a1: List[A], a2: List[A]): List[A] =
+    foldRight(a2, a1)((x, accum) => Cons(x, accum))
+    //a2
+
   def bump(xs: List[Int]): List[Int] =
      foldRight(xs, Nil:List[Int])((x, z) => Cons(x + 1, z))
 
-  def cbump(xs: List[String]): List[String] =
-    foldRight(xs, Nil:List[String])((x, z) => Cons(x + "x", z))
+  def dToS(ds: List[Double]): List[String] =
+    foldRight(ds, Nil:List[String])((d, z) => Cons(d.toString, z))
 
-  def map[A,B](as: List[A], f: A => B): List[B] =
+  def map[A,B](as: List[A])(f: A => B): List[B] =
     foldRight(as, Nil:List[B])((a,z) => Cons(f(a), z))
+
+  def filter[A](as: List[A])(p: A => Boolean): List[A] =
+    foldRight(as, Nil:List[A])((a,accum) => if (p(a)) Cons(a, accum) else accum)
+
+  def flatMap[A,B](as: List[A])(f: A => List[B]): List[B] = {
+    val m:List[List[B]] = List.map(as)(f)
+    foldRight(m, Nil:List[B])((accum, a) => append(a, accum))
+  }
+
+  def filter2[A](as: List[A])(p: A => Boolean): List[A] =
+    flatMap(as)(a => if (p(a)) List(a) else Nil:List[A])
+
+  def zipAdd(a1:List[Int], a2: List[Int]): List[Int] = (a1, a2) match {
+    case (Nil, Nil) => Nil
+    case (Cons(h1, t1), Cons(h2, t2)) => Cons(h1 + h2, zipAdd(t1, t2))
+  }
+
+  def zipWith[A,B](a1:List[A], a2: List[A])(f: (A,A) => B): List[B] = (a1, a2) match {
+    case (Nil, Nil) => Nil
+    case (Cons(h1, t1), Cons(h2, t2)) => Cons(f(h1, h2), zipWith(t1, t2)(f))
+  }
+
 
 }
 

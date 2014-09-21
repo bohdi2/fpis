@@ -3,7 +3,7 @@ package chapter3
 import org.scalatest.{FlatSpec, Matchers}
 import scala.annotation.tailrec
 
-class Exercises3Spec
+class ListSpec
   extends FlatSpec
   with Matchers {
 
@@ -105,17 +105,42 @@ class Exercises3Spec
     List(1,2,3,4) should equal(List.reverse3(List(4,3,2,1)))
   }
 
+  "List.append" should "append" in {
+    List(1,2,3,4) should equal(List.append(List(3,4), List(1,2)))
+  }
   "List.bump" should "increment" in {
     List(2,3,4) should equal(List.bump(List(1,2,3)))
   }
 
-  "List.cbump" should "append" in {
-    List("ax", "bx") should equal(List.cbump(List("a", "b")))
+  "List.dToS" should "convert a list of doubles to strings" in {
+    List("1.1", "1.2") should equal(List.dToS(List(1.1, 1.2)))
   }
 
   "List.map" should "increment" in {
-    List("1x","2x","3x") should equal(List.map[Int, String](List(1,2,3), _ + "x"))
+    List("1x","2x","3x") should equal(List.map[Int, String](List(1,2,3))(_ + "x"))
   }
 
+  "List.filter" should "filter out things" in {
+    List(1,3,5) should equal(List.filter(List(1,2,3,4,5))(_%2 != 0))
+  }
 
+  "List.flatMap" should "apply a function and then flatten" in {
+    List(1,1,2,2,3,3) should equal(List.flatMap(List(1,2,3)) (i => List(i,i)))
+  }
+
+  "List.filter2" should "filter out things" in {
+    List(1,3,5) should equal(List.filter2(List(1,2,3,4,5))(_%2 != 0))
+  }
+
+  "List.zipAdd" should "Add two lists pair wise" in {
+    List(1,3,5) should equal(List.zipAdd(List(0,2,4), List(1,1,1)))
+  }
+
+  "List.zipWith" should "Add two lists pair wise" in {
+    List(1,3,5) should equal(List.zipWith(List(0,2,4), List(1,1,1))(_+_))
+  }
+
+  "List.zipWith" should "Add two lists pair wise" in {
+    List("01","21","41") should equal(List.zipWith(List(0,2,4), List(1,1,1))((a,b) => s"$a$b"))
+  }
 }
