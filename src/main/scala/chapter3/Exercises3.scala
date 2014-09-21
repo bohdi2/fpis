@@ -76,7 +76,16 @@ object List {
   def length3[A](l: List[A]) = foldLeft(l, 0)((b,a) => b+1)
 
   def reverse3[A](xs: List[A]): List[A] =
-    List.foldLeft(xs, Nil:List[A])((accum,x) => Cons(x,accum))
+    foldLeft(xs, Nil:List[A])((accum,x) => Cons(x,accum))
+
+  def bump(xs: List[Int]): List[Int] =
+     foldRight(xs, Nil:List[Int])((x, z) => Cons(x + 1, z))
+
+  def cbump(xs: List[String]): List[String] =
+    foldRight(xs, Nil:List[String])((x, z) => Cons(x + "x", z))
+
+  def map[A,B](as: List[A], f: A => B): List[B] =
+    foldRight(as, Nil:List[B])((a,z) => Cons(f(a), z))
 
 }
 
