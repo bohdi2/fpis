@@ -104,4 +104,18 @@ class Exercises3Spec
   "List.reverse3" should "reverse" in {
     List(1,2,3,4) should equal(List.reverse3(List(4,3,2,1)))
   }
+
+  "List.bump" should "increment" in {
+    List(2,3,4) should equal(List.bump(List(1,2,3)))
+  }
+
+  "List.cbump" should "append" in {
+    List("ax", "bx") should equal(List.cbump(List("a", "b")))
+  }
+
+  "List.map" should "increment" in {
+    List("1x","2x","3x") should equal(List.map[Int, String](List(1,2,3), _ + "x"))
+  }
+
+
 }
